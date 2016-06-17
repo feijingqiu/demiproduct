@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.min.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+	<style>
+    .option-selected{
+        background-color: #ccc !important;
+      }
+    </style>
+    <!-- your app's js -->
+ <!--   <script src="/common/js/jquery-2.1.1.min.js"></script>-->
+
+    <script src="js/3rd/jquery-2.1.1.min.js"></script>
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.min.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+	<script src="lib/ionic/plugins/citys/citys-select.js"></script>
+	<script src="lib/ionic/plugins/angular-utf8-base64.min.js"></script>
+	<script src="lib/ionic/plugins/ionic-modal-select.min.js"></script>
+	<script src="lib/ionic/plugins/jweixin-1.0.0.js"></script>
+    <script src="lib/ionic/plugins/ionic-image-lazy-load.js"></script>
+    <script src="js/zdzy/common.js"></script>
+
+
+  <!--  <script src="lib/ionic/plugins/ng-cordova/ng-cordova.js"></script>-->
+    <script src="cordova.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/controllers.js"></script>
+    <script src="js/controllers/CommonControllers.js"></script>
+    <script src="js/controllers/HomeControllers.js" charset="utf8"></script>
+    <script src="js/controllers/SupplyControllers.js"></script>
+    <script src="js/templates.js"></script>
+    <!-- service level -->
+    <script src="js/services/services.js"></script>
+    <script src="js/services/HomeServices.js"></script>
+    <script src="js/services/SupplyServices.js"></script>
+    <script src="js/services/CommonServices.js"></script>
+    <script src="js/services/LocationServices.js"></script>
+
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=iMH7x5RTqB8HI17wNLUCHZIf" type="text/javascript"></script>
+    <script src="js/zdzy/location.js"></script>
+
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body ng-app="starter">
+    <!--
+      The nav bar that will be updated as we navigate between views.
+    -->
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button class="button-clear mr-back-btn">
+	    <i class="ion-ios-arrow-back"></i>
+	  </ion-nav-back-button>
+    </ion-nav-bar>
+    <!--
+      The views will be rendered in the <ion-nav-view> directive below
+      Templates are in the /templates folder (but you could also
+      have templates inline in this html file if you'd like).
+    -->
+    <ion-nav-view></ion-nav-view>
+  </body>
+  <!--图片预览窗口-->
+<script id="common_watchPictureWindow" type="text/ng-template">
+    <ion-modal-view style="background-color: #212121;border-color: #212121" ng-controller="CommonWatchPictureCtrl">
+        <ion-content >
+        <ion-slide-box on-slide-changed="showall()"
+                       show-pager="{{watchPictureInfoList.length>1?true:false}}">
+            <ion-slide ng-repeat="(index, watchPictureInfo) in watchPictureInfoList">
+                <ion-scroll zooming="true"
+                            direction="xy"
+                            style="{{'display:table-cell;text-align:center;vertical-align:middle;'+screenImageStyle}}"
+                            scrollbar-x = 'false'
+                            scrollbar-y = 'false'
+                            ng-click="endLoolPicture()"
+                            min-zoom="1">
+                        <img  style="width: 100%;" on-hold="storeImageFromProduct('{{watchPictureInfo.domain+watchPictureInfo.attached_name+pictureImageStyle}}')"
+                              ng-cache ng-src="{{watchPictureInfo.domain+watchPictureInfo.attached_name+pictureImageStyle}}">
+                </ion-scroll>
+            </ion-slide>
+        </ion-content>
+    </ion-modal-view>
+</script>
+</html>

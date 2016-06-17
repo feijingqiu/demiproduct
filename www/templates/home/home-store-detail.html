@@ -1,0 +1,153 @@
+
+<ion-view hide-tabs>
+	<ion-nav-title class="md-title" >
+		<span class="header-title" >商铺详情</span>
+	</ion-nav-title>
+
+	<div class="bar-subheader" style="height:112px;position: relative;z-index: 2;display: block;">
+		<div class="item item-avatar-left" style="height: 44px;" >
+			<img alt="" class=""
+				 ng-src="{{product_store.header_logo==null||product_store.header_logo=='' ? 'img/default_header.png' : product_store.header_logo+store_img_style}}"
+			>
+			<h3>
+				{{product_store.store_name}}
+                <span class="mr-dispaly-right mr-color-aaa">
+                    关注：<span ng-bind="product_store.attentionCount"></span>
+                 </span>
+			</h3>
+			<div class="authentication-style icon mr-font-size-12">
+				<div ng-show="(product_store.is_pass_company==='1')">
+					<img src="img/authentication-company.png" class="company-authentication-img"/>
+				</div>
+				<div ng-show="(product_store.is_pass_person==='1')">
+					<img src="img/authentication-person.png"
+						 class="person-authentication-img"/>
+				</div>
+				<div ng-show="product_store.is_pass_person!='1'&&product_store.is_pass_person!='1'">
+					<span class="person-authentication-img" style="color:#999;font-size: 12px;">无认证</span>
+				</div>
+                    <span class="mr-dispaly-right mr-color-aaa">
+                        预览：<span ng-bind="product_store.browseCount"></span>
+                    </span>
+			</div>
+		</div>
+		<div class="mr-tab-white">
+			<div class="mr-col-left-50" ng-class="{'mr-tab-active': current_tab == 0,'mr-tab-white':current_tab!=0}"
+				 on-touch="selectTab(0)" >公开产品
+			</div>
+			<div class="mr-col-left-50" ng-class="{'mr-tab-active': current_tab == 2,'mr-tab-white':current_tab!=2}"
+				 on-touch="selectTab(2)" >商铺信息
+			</div>
+		</div>
+	</div>
+
+	<ion-content class="has-footer" lazy-scroll delegate-handle="storeScroll" style="background-color: #f2f2f2;">
+		<div style="height:122px;"></div>
+		<div ng-show='current_tab==2' >
+			<div  class="item  item-icon">
+				<h2 class="store-info">地址</h2>
+				<h3 class="store-info-text"
+						>
+					{{product_store.province_name+product_store.city_name+product_store.county_name+product_store.street_address}}
+					<!--<span style="color:#39E3BE;font-size: large" class="main-color ion-navigate" ng-click="addressMapNavigation(product_store.longitude,product_store.latitude)"></span>
+-->				</h3>
+			</div>
+			<div class="separate-md-1"></div>
+			<div  class="item  item-icon">
+				<h2 class="store-info">主营</h2>
+				<h3 class="store-info-text"
+					ng-bind="product_store.main_product"></span>
+				</h3>
+			</div>
+			<div class="separate-md-1"></div>
+			<div  class="item  item-icon">
+				<h2 class="store-info">区号</h2>
+				<h3 class="store-info-text"
+					ng-bind="product_store.area_code"
+						></h3>
+			</div>
+			<div class="separate-md-1"></div>
+			<div class="item item-icon "
+					>
+				<h2 class="store-info">电话</h2>
+				<h3 ng-bind="product_store.telephone||product_store.userid"
+					class="store-info-text"
+						></h3>
+			</div>
+		</div>
+		<div ng-show='current_tab==0'>
+			<div class="item-input-inset mr-search-header" style="padding-bottom: 10px;">
+				<label class="item item-input item-input-wrapper mr-search-item" style="background-color:white;">
+					<i class="icon ion-search placeholder-icon"></i>
+					<form name="searchForm" ng-submit="searchProductList(query.keyword_0)">
+						<input type="text" placeholder="输入产品编号或描述"
+							   ng-model="getProductsRequestBody_0.keyword"
+					   >
+					</form>
+				</label>
+			</div>
+			<ion-list class="product-list" >
+				<div class="mr-col-33 mr-col-left mr-list-card-content" style="margin-bottom:-20px; "
+					 ng-repeat="product in products_0"
+					 ui-sref="tab.home-product-detail({product_id:product.product_id})">
+					<div class="mr-thumbnail ">
+						<img image-lazy-src="{{::(product.domain+product.attached_name+img_style_0)}}" style="{{productImageStyle}}"
+							 lazy-scroll-resize="true"
+							 image-lazy-distance-from-bottom-to-load="10"
+						>
+						<span class="mr-display-1line mr-font-size-12" style="background-color: #eee; text-align: center;" ng-bind="::product.product_description"></span>
+
+						<div style="color:red; text-align: center;background-color: #eee;">
+							<span class="mr-font-size-12" ng-show="product.min_price+''+product.min_amount!='00'">{{::(product.min_price+"元/"+product.product_uom_name)}}</span>
+							<span class="mr-font-size-12" ng-show="product.min_price+''+product.min_amount=='00'">面议</span>
+							<span class="mr-font-size-12" style="color:#39E3BE;" ng-bind="::product.product_code+'款'"></span>
+						</div>
+					</div>
+				</div>
+			</ion-list>
+		</div>
+		<div ng-if='current_tab==1'>
+			<div ng-show="showView">
+				<div class="item-input-inset mr-search-header" style="padding-bottom: 10px;">
+					<label class="item item-input item-input-wrapper mr-search-item" style="background-color:white;">
+						<i class="icon ion-search placeholder-icon"></i>
+						<form name="searchForm" ng-submit="searchProductList(query.keyword_1)">
+							<input type="text" placeholder="输入产品编号或描述" ng-model="query.keyword_1" ng-enter='searchProductList(1,query.keyword_1)'>
+						</form>
+					</label>
+				</div>
+				<ion-list class="product-list" >
+					<div class="mr-col-33 mr-col-left mr-list-card-content" style="margin-bottom:-20px; "
+						 ng-repeat="product in products_1"
+						 ng-click ="openProductDetailWindow(product.product_id)">
+						<div class="mr-thumbnail ">
+							<img image-lazy-src="{{::(product.domain+product.attached_name+img_style_1)}}"
+								 lazy-scroll-resize="true"
+								 image-lazy-distance-from-bottom-to-load="10"
+									>
+							<span class="mr-display-1line mr-font-size-12" style="background-color: #eee; text-align: center;" ng-bind="::product.product_description"></span>
+
+							<div style="color:red; text-align: center;background-color: #eee;"><span class="mr-font-size-12">
+                        {{::(product.min_price+"元/"+product.product_uom_name)}}
+                    </span>
+							</div>
+						</div>
+					</div>
+				</ion-list>
+			</div>
+		</div>
+		<ion-infinite-scroll  ng-if="moreDataCanBeLoaded[current_tab]"
+							  on-infinite="loadMore_Store_data({{current_tab}})"
+							  distance="1%"
+		></ion-infinite-scroll>
+	</ion-content>
+	<ion-footer-bar class="mr-custom-footer">
+		<div class="mr-footer-bar" style="width:100%;background-color: #39e3be;color:white;">
+			<a style="color:white;text-decoration:none;" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.szmengran.mrzdzyapp">
+				<i class="ion-social-apple" style="font-size:20px;"></i>
+				<i class="ion-social-android" style="font-size:20px;"></i>
+				<span style="font-size:20px;">得米APP下载</span>
+			</a>
+		</div>
+	</ion-footer-bar>
+</ion-view>

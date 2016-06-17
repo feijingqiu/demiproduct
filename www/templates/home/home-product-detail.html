@@ -1,0 +1,63 @@
+
+<ion-view hide-tabs>
+	<ion-nav-title class="md-title" >
+		<span class="header-title" >产品详情</span>
+	</ion-nav-title>
+  <ion-content>
+	<ion-slide-box  on-slide-changed="slideHasChanged($index)" show-pager="{{product_images.length>1?true:false}}" class="slide-box home-top-ad-slide-box" id="product_images">
+	  <ion-slide ng-repeat="(index,product_image) in product_images">
+	    <div class="home-top-ad-box"><img ng-click="openWatchPictureWindow(index)" src="{{product_image.domain+product_image.attached_name+img_style}}" style="{{productDetailImageStyle}}" width="100%"></div>
+	  </ion-slide>
+	</ion-slide-box>
+  <div class="separate-md-1"></div>
+  <div class="view-header">
+	<div>{{product.product_description}}</div>
+  </div>
+  <div class="separate-md-1"></div>
+	<ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="{{priceList.length>1?true:false}}" class="slide-box home-menus-slide-box">
+		<ion-slide ng-repeat="(index, prices) in priceList">
+		<div class="row">
+		  <div class="col-33" ng-repeat="price in prices">
+		    <div class="mr-thumbnail mr-align-center">
+		      <div><span style="font-size: 12px;">{{price.description}}</span></div>
+		      <div><span style="color:red">{{price.product_price}}元 </span></div>
+		  	</div>
+		  </div>
+		</div>
+	  	</ion-slide>
+	</ion-slide-box>
+	<div class="separate-md-1"></div>
+	<div class="view-header"><span class="mr-color-red mr-font-weight-bold">{{product.is_new==1?"全新":"二手"}}</span></div>
+	<div class="view-header"><span>产品编号&nbsp;&nbsp;</span><span style="color:red;" ng-bind="{{product.product_code}}">{{product.product_code}}</span></div>
+	<div class="separate-md-1"></div>
+	<ion-item class="mr-item-header-logo-left item-borderless" ui-sref="tab.home-store-detail({product_store_id:product_store.product_store_id,userid:product_store.userid})">
+        <img ng-src="{{product_store.header_logo+store_img_style}}">
+        <div><span class="omit title">{{product_store.store_name===""?"匿名商铺":product_store.store_name}}</span></div>
+		<div ng-show="(product_store.is_pass_company=='1')"
+			 ng-class="{'left-float':product_store.is_pass_person=='1'}">
+			<img src="img/authentication-company.png"
+				 class="company-authentication-img"
+					/>
+		</div>
+
+		<div ng-show="(product_store.is_pass_person=='1')">
+			<img src="img/authentication-person.png"
+				 class="person-authentication-img"/>
+		</div>
+		<div ng-show="product_store.is_pass_person!='1'&&product_store.is_pass_person!='1'">
+			<span style="color:#999;font-size: 12px">无认证</span>
+		</div>
+        <!--<div><span class="authentication-style icon">{{product_store.is_pass_company==1?"企业认证":(product_store.is_pass_person==1?"个人认证":"无认证")}}</span><span class="mr-dispaly-right mr-color-aaa">{{product_store.city_name}}</span></div>
+ -->   </ion-item>
+    <div class="separate-md-1"></div>
+  </ion-content>
+  <ion-footer-bar class="mr-custom-footer">
+        <div class="mr-footer-bar" style="width:100%;background-color: #39e3be;color:white;">
+            <a style="color:white;text-decoration:none;" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.szmengran.mrzdzyapp">
+            	<i class="ion-social-apple" style="font-size:20px;"></i>
+            	<i class="ion-social-android" style="font-size:20px;"></i>
+            	<span style="font-size:20px;">得米APP下载</span>
+            </a>
+        </div>
+    </ion-footer-bar>
+</ion-view>

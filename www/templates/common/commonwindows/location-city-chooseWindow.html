@@ -1,0 +1,81 @@
+<!--地区选择带定位-->
+<ion-modal-view >
+    <ion-header-bar class="bar-stable bar bar-header disable-user-behavior " align-title="center">
+        <button class="button back-button buttons button-clear header-item"
+                ng-click="closeCitySelectWindow()">
+            <i class="icon ion-ios-arrow-back mr-header-title-color"></i>
+        </button>
+        <div class="title title-center header-item"
+             style="transform: translate3d(0px, 0px, 0px); left: 60px; right: 60px;">
+            <span class="nav-bar-title mr-header-title-color" >选择城市</span>
+        </div>
+    </ion-header-bar>
+    <ion-content overflow-scroll="true">
+        <ion-list>
+            <div id="back_top" class="separate-md-1" style="height:38px;">
+                <div class="item-input-inset mr-search-header" style="padding-top:8px;padding-bottom: 8px;">
+                    <label class="item item-input item-input-wrapper mr-search-item" style="background-color:white;">
+                        <i class="icon ion-search placeholder-icon"></i>
+                        <input type="text" placeholder="请输入城市名" ng-model="criteria">
+                    </label>
+                </div>
+            </div>
+            <div class="address-title">当前选择</div>
+            <div class="col-md-2 address_location"
+                 style="height:30px;margin-left:10px;line-height:30px;">
+                <button ng-bind="choseCity==''?'不限':choseCity"
+                        style="background-color: #fff;
+                                border: 0px;"
+                        on-touch="selectLocation({name:query.city_name})"
+                        >
+                </button>
+            </div>
+            <div class="address-title">定位城市</div>
+            <div class="col-md-2 address_location"
+                 style="height:30px;margin-left:10px;line-height:30px;">
+                <button ng-bind="locationCity==''?'未定位':locationCity"
+                        style="background-color: #fff;
+                                border: 0px;"
+                        on-touch="selectLocation({name:locationCity})"
+                        ng-disabled = "locationCity!=''&& locationButtonClick"
+                        >
+                </button>
+                <button class="more-right"
+                        style="margin-right:10px;
+                            background-color: #fff;
+                                border: 0px;"
+                        ng-click="resetLocation()"
+                        ng-bind="locationButtonText"
+                        ng-disabled = "locationButtonClick"
+                        ></button>
+            </div>
+            <div class="address-title">热门城市</div>
+            <div ng-repeat="item in items.hot_city | filter:criteria"
+                 class="address-hot col-100">
+                <div class="item mr-col-33 mr-col-left-0"
+                     ng-click="selectLocation(item)"
+                     ng-bind="::item.name"></div>
+            </div>
+            <div class="list">
+                <div ng-repeat-start="(firstLetter, items) in items.citys">
+                    <div class="address-title mr-clear-both"
+                         id="{{firstLetter}}"
+                         ng-bind="::firstLetter"></div>
+                </div>
+                <div class="item"
+                     ng-repeat="item in items | filter:criteria "
+                     ng-bind="::item.name"
+                     ng-click="selectLocation(item)">
+                    <div class="item" ng-bind="::item.name"></div>
+                </div>
+                <div ng-repeat-end></div>
+            </div>
+
+    </ion-content>
+</ion-modal-view>
+<div class="rj-contacts-right-bar" on-drag="contacts_right_bar_swipe($event)">
+    <div id="cell" class="mr-contacts-right-bar">
+        <div ng-click="goto('back_top')">&uarr;</div>
+        <div ng-repeat="(firstLetter, items) in items.citys" ng-click="goto('{{::firstLetter}}')" ng-bind="::firstLetter"></div>
+    </div>
+</div>

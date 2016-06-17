@@ -1,0 +1,136 @@
+<ion-view hide-tabs>
+	<!--<ion-nav-title>
+	<div class="bar bar-header item-input-inset mr-search-header">
+		          <fancy-select
+					  header-text="选择省市区"
+					  items="city_data"
+					  value="selected"
+					  icon-property="icon"
+					  value-property="id"
+					  text-property="name"
+					  allow-empty='true'
+					  multi-select="false"
+					  text="{{mrLocation.value}}"
+					  modal-template-url="/moble/lib/ionic/plugins/citys/modal-template.html"
+					  template-url="/moble/lib/ionic/plugins/citys/item-template.html"
+					  note-text="{{mrLocation.value}}"
+					  value-changed="onValueChanged(value)"
+					  get-custom-text="getCustomText(value)"
+					  >
+					</fancy-select>
+					<i class="icon ion-right light ion-ios-arrow-down" style="padding-right:8px;"></i>
+			    <label class="item item-input item-input-wrapper mr-search-item">
+			      <i class="icon ion-search placeholder-icon"></i>
+			      <input type="text" placeholder="请输入商品名称"
+						 ui-sref="tab.home-search-productHistory({searchType:'product'})"
+				  >
+			    </label>
+		   </div>
+     </ion-nav-title>-->
+	<ion-nav-title>
+		<div class="item-input-inset  head-address-input">
+			<div class="icon ion-right light " style="padding-right:6px;"
+				 ng-click="openCitySelectWindow(mrLocation.value)">{{mrLocation.value|limitTo:5}}&nbsp;<i class="ion-ios-arrow-down"></i></div>
+			<div class="item item-input item-input-wrapper mr-search-item head-input"
+					>
+				<i class="icon ion-search placeholder-icon"></i>
+				<input type="text" placeholder="请输入商品名称"
+					   readonly="true"
+					   ui-sref="tab.home-search-productHistory({searchType:'product'})"
+						>
+				<!--<i class="ion-camera" ng-click="openPopover($event)"  style="width: 60px;text-align: right;"></i>-->
+			</div>
+		</div>
+	</ion-nav-title>
+
+  <ion-content lazy-scroll >
+  <ion-refresher pulling-text="松开立即刷新。。。" on-refresh="doRefresh()"></ion-refresher>
+   <ion-slide-box show-pager="{{images.length>1?true:false}}" on-slide-changed="slideHasChanged($index)" does-continue="true" auto-play="true" slide-interval="2000" class="home-top-ad-slide-box">
+	  <ion-slide ng-repeat="image in images" ng-click="go('/tab/home/menus/{{image.menuid}}')">
+	    <div class="home-top-ad-box"><img src="{{image.ad_img+img_style}}" width="100%"></div>
+	  </ion-slide>
+	</ion-slide-box>
+	  <div class="separate-md-1 mr-clear-both"></div>
+		<div style="padding-top:9px;">
+			<div class="col-20 mr-col-left-20" ng-repeat="menu in menus"
+			ng-click="clickMenuGo(menu)"
+			>
+				<div class="mr-thumbnail-20">
+				<img ng-src="{{menu.icon+img_style_icons}}" >
+				<div ng-bind="menu.menuname" style="text-align: center;"></div>
+			</div>
+		</div>
+	</div>
+	<div class="separate-md-1 mr-clear-both"></div>
+	<div class="view-header">
+		<span >名店推荐</span><!--<a class="more-right" href="#">更多</a>-->
+	</div>
+	<ion-list>
+	<ion-item class="item-thumbnail-left mr-item-store"
+			  ng-repeat="store in stores"
+			ui-sref="tab.home-store-detail({product_store_id:store.product_store_id,userid:store.userid})"
+	>
+        <img ng-src="{{::(store.header_logo+img_style_store)}}">
+		<span class="omit title" ng-bind="::(store.store_name===''?'匿名商铺':store.store_name)"></span>
+
+		<div class="authentication-style icon mr-font-size-12">
+			<div ng-show="::(store.is_pass_company==1)"
+				 ng-class="{'left-float':store.is_pass_person==='1'}">
+				<img src="img/authentication-company.png"
+					 class="company-authentication-img"
+						/>
+			</div>
+
+			<div ng-show="::(store.is_pass_person==='1')">
+				<img src="img/authentication-person.png"
+					 class="person-authentication-img"/>
+			</div>
+			<div ng-show="store.is_pass_person!='1'&&store.is_pass_person!='1'">
+				<span style="color:#999;">无认证</span>
+			</div>
+		</div>
+		<div style="clear: both"></div>
+		<span class="mr-dispaly-right mr-color-aaa mr-font-size-12" ng-bind="::store.city_name"></span>
+		<span class="mr-display-2line mr-font-size-12">{{store.main_product===""?"无主营介绍":store.main_product}}</span>
+    </ion-item>
+    </ion-list>
+	<div class="separate-md-1 mr-clear-both"></div>
+	<div class="view-header">
+		<span>明星产品</span><!--<a class="more-right" ui-sref="tab.common-iframe">更多</a>-->
+	</div>
+	<div class="mr-col-33 mr-col-left mr-list-card-content" style="margin-bottom:-20px; " ng-repeat="(index,product) in products"
+		 ui-sref="tab.home-product-detail({product_id:product.product_id})"
+	>
+		<div class="mr-thumbnail"
+				id="{{'tiantian'+index}}">
+			<img image-lazy-src="{{::(product.domain+product.attached_name+img_style_product)}}"
+				 style="{{productImageStyle}}"
+				 lazy-scroll-resize="true"
+				 image-lazy-distance-from-bottom-to-load="-50"
+			>
+		    <span class="mr-display-2line mr-font-size-12" style="background-color: #eee;">{{product.product_description}}</span>
+		  <!--  <div style="color:red; text-align: center;background-color: #eee;"><span class="mr-font-size-12">{{product.min_price+"元/"+product.product_uom_name}}</span></div>
+		-->	<div style="color:red; text-align: center;background-color: #eee;">
+                    <span class="mr-font-size-12" ng-show="::(product.min_price+''+product.min_amount!='00')">
+                    {{::(product.min_price+"元/"+product.product_uom_name)}}
+                    </span>
+                    <span class="mr-font-size-12" ng-show="::(product.min_price+''+product.min_amount=='00')">
+                    面议
+                    </span>
+			</div>
+		</div>
+	</div>
+	<!--<div style="line-height: 5px;">&nbsp;</div>
+	<div class="separate-md-1 mr-clear-both"></div>
+	<div ng-repeat="image in ad_bottom_images">
+		<div class="home-top-ad-box"><img src="{{image.ad_img+img_style}}" width="100%"></div>
+	</div>-->
+	  <ion-infinite-scroll on-infinite="load_more_products()"
+						   ng-if="moreDataCanBeLoaded"
+						   distince="1%"></ion-infinite-scroll>
+  </ion-content>
+ <!-- <ion-fonter-bar>
+  	<div></div>
+  </ion-fonter-bar>-->
+</ion-view>
+

@@ -1,0 +1,144 @@
+<ion-view   hide-tabs >
+    <ion-nav-title>
+        <div class="item-input-inset head-address-input">
+            <div class="icon ion-right light " style="padding-right:6px;"
+                 ng-click="openChooseAreaWindow()"
+                 ng-controller="CommonAreaChooseWindowCtrl"
+                    >
+                {{last_areaName||'不限'}}
+                <i class="ion-ios-arrow-down"></i>
+            </div>
+            <div class="item item-input item-input-wrapper  head-input"
+                    >
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="{{pageDataList[0].respondBody.keyword||'请输入公司名或职位'}}"
+                       style="padding-right:0px "
+                       readonly="true"
+                       ng-click="openHistorySearchWindow('recruit',pageDataList[0].respondBody.keyword||'','请输入公司名或职位')"
+                       ng-controller="HistorySearchWindowCtrl"
+                        >
+            </div>
+        </div>
+    </ion-nav-title>
+    <ion-content  >
+        <ion-refresher pulling-text="松开立即刷新..." on-refresh="recruit_refresh(0)"></ion-refresher>
+        <ion-list  class="list product-list list-miss-bottom"  style="margin-top: -16px; ">
+            <ion-item class="item"
+                      show-delete="false" show-reorder="false"
+                     style="border-top-color: #fff;margin-top: 1px;"
+                     ng-repeat="recruit in resultList[showIndex]"
+                      ng-controller="HomeRecruitDetailWindowCtrl"
+                     ng-click="openHomeRecruitDetailWindow(recruit.recruitid,false)"
+                    >
+                <div class="recruit-list-div1 item-input" >
+                    <span ng-bind="::recruit.companyname">
+                    </span>
+                    <h3 class="mr-color-39E3BE" >
+                        {{::((recruit.startsalary +(recruit.endsalary==''?'':'-')+recruit.endsalary+ ' 元/'+recruit.salaryUnitName ))}}
+                    </h3>
+                </div>
+                <div class="recruit-list-div2 item-input" >
+                    <span ng-bind="::recruit.job">
+                    </span>
+                    <h3 class="mr-color-aaa" >
+                        {{::(recruit.updatetime|limitTo:10)}}
+                    </h3 >
+                </div>
+                <div class="recruit-list-div3 item-input" >
+                    <span ng-bind="::(recruit.province_name+recruit.city_name+recruit.county_name)">
+                    </span>
+                    <h3 class="mr-color-aaa" >
+                        <i class="ion-ios-location mr-color-39E3BE"></i>
+                        {{::(recruit.distance==''?'未知':(recruit.distance|limitTo:3)+'km')}}
+                    </h3>
+                </div>
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll ng-if="moreDataCanBeLoaded"
+                             on-infinite="commonParentLoadMore(showIndex)"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>
+
+<!--查看职位详情界面-->
+<script id="home_recruit_detailWindow.html" type="text/ng-template">
+    <ion-modal-view ng-controller="HomeRecruitDetailWindowCtrl">
+        <ion-header-bar class="bar-stable bar bar-header disable-user-behavior " align-title="center">
+            <button class="button back-button buttons button-clear header-item"
+                    on-touch="closeHomeRecruitDetailWindow()">
+                <i class="icon ion-ios-arrow-back mr-header-title-color">&nbsp;</i>
+            </button>
+            <div class="title title-center header-item"
+                 style="transform: translate3d(0px, 0px, 0px); left: 60px; right: 60px;font-weight:bold;">
+                <span class="nav-bar-title mr-header-title-color" ng-bind="_recruit.companyname"></span>
+            </div>
+            <button class="button  buttons button-clear header-item"
+                    >
+            </button>
+        </ion-header-bar>
+        <ion-content class="has-footer">
+            <div class="item  item-icon " style="text-align: center;color: #39e3be;padding-top: 12px">
+                <span  ng-bind="_recruit.job">
+                </span>
+                <br/>
+                <div style="color: #39e3be; text-align: left;font-size: 13px;padding-left: 12px">
+                    {{_recruit.startsalary}}{{_recruit.endsalary==''?'':'-'+_recruit.endsalary}}{{'/'+_recruit.salaryUnitName}}
+                </div>
+
+                <div class="row"
+                      style="text-align: left;height: 18px;padding-left: 0px;">
+                    <div class="col col-50" >
+                        <div class="column-title" style="" >岗位性质：</div>
+                        <div class="column-content" ng-bind="_recruit.workpropertyid=='1'?'全职':'兼职'"></div>
+                    </div>
+                    <div class="col col-50">
+                        <div class="column-title">招聘人数：</div>
+                        <div class="column-content" ng-bind="_recruit.recruitquantity"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recruit-item">
+                <div class="column-title">
+                    工作地址
+                </div>
+                <span class="column-content ">{{_recruit.province_name+_recruit.city_name+_recruit.county_name+_recruit.street_address}} <span style="color:#39E3BE;font-size: large" class="main-color ion-navigate" ng-click="addressMapNavigation(_recruit.longitude,_recruit.latitude)"></span></span>
+            </div>
+            <div class="recruit-item">
+                <div class="column-title"
+                        >
+                    职位福利
+                </div>
+                <div class="column-content "
+                        ng-bind="_recruit.welfare">
+                </div>
+            </div>
+            <div class="recruit-item">
+                <div class="column-title">
+                    职位要求
+                </div>
+                <div class="column-content "
+                        ng-bind="recruitDemand">
+                </div>
+            </div>
+            <div class="recruit-item">
+                <div class="column-title">
+                    职位描述
+                </div>
+                <div class="column-content "
+                     ng-bind="_recruit.description">
+                </div>
+            </div>
+            <div class="recruit-item">
+                <div class="column-title" style="height: 20px">
+
+                </div>
+            </div>
+        </ion-content>
+        <ion-footer-bar class="mr-custom-footer">
+            <div class="mr-footer-bar" style="width:100%;background-color: #39e3be;color:white;" ng-controller="PhoneCtrl" ng-click="phoneCallNumber(_recruit.phone||_recruit.createuserid)">电话联系
+            </div>
+        </ion-footer-bar>
+    </ion-modal-view>
+</script>

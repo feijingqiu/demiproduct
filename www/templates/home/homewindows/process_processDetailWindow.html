@@ -1,0 +1,104 @@
+<!--查看工厂详情窗口-->
+<ion-modal-view class="mengran-top" style="background-color: #f2f2f2;">
+    <ion-header-bar class="bar bar-positive item-input-inset mr-search-header main-bg-border"
+                    align-title="center">
+        <button class="button back-button buttons button-clear header-item"
+                ng-click="closeProcessDetailWindow()">
+            <i class="icon ion-ios-arrow-back mr-header-title-color">&nbsp;</i>
+        </button>
+        <div class="title title-center header-item"
+             style="transform: translate3d(0px, 0px, 0px); left: 60px; right: 60px;font-weight:bold;">
+            <span class="nav-bar-title mr-header-title-color">加工厂详情</span>
+        </div>
+    </ion-header-bar>
+
+    <div style="height:72px;position: relative;z-index: 2;display: block;">
+        <div class="item item-avatar-left stable-bg" style="height: 44px;">
+            <img  ng-src="{{product_store.header_logo==null||product_store.header_logo=='' ? 'img/default_header.png' : product_store.header_logo+process_img_style}}">
+            <h3 ng-bind="product_store.nickname"></h3>
+            <div class="authentication-style icon mr-font-size-12">
+                <div ng-show="(product_store.is_pass_company==='1')">
+                    <img src="img/authentication-company.png" class="company-authentication-img"/>
+                </div>
+
+                <div ng-show="(product_store.is_pass_person==='1')">
+                    <img src="img/authentication-person.png"
+                         class="person-authentication-img"/>
+                </div>
+                <div ng-show="product_store.is_pass_person!='1'&&product_store.is_pass_person!='1'">
+                    <span style="color:#999;font-size: 12px;">无认证</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ion-content lazy-scroll>
+        <div style="height:80px;"></div>
+        <ion-item>
+            <div class="process-detail-title">
+                 <p>地址</p>
+              <span class="more-lines"
+              >{{::(product_store.province_name+product_store.city_name+product_store.county_name+product_store.street_address)}}</span>
+             <!-- <span style="color:#39E3BE;font-size: large" class="main-color ion-navigate" ng-click="addressMapNavigation(product_store.longitude,product_store.latitude)"></span>-->
+            </div>
+        </ion-item>
+        <ion-item>
+            <div class="process-detail-title">
+                <p >主营</p>
+                <span class="more-lines">{{::product_store.factory_descript}}</span>
+            </div>
+        </ion-item>
+        <div class="separate-md-1"></div>
+        <ion-item>
+            <div class="process-detail-title">
+                公司规模
+                <span class="more-right">{{::product_store.scale}}</span>
+            </div>
+        </ion-item>
+        <ion-item>
+            <div class="process-detail-title">
+                加工类型
+                <span class="more-right">{{::factory_category[0].factory_category_name}}</span>
+            </div>
+        </ion-item>
+        <ion-item>
+            <div class="process-detail-title">
+             电话
+            <span class="more-right" ng-bind="::product_store.phone"></span>
+            </div>
+        </ion-item>
+        <div class="separate-md-1"></div>
+        <ion-item class="process-detail-picture">
+            <div class="process-detail-title picture-title">
+                工厂、产品图片
+            </div>
+            <div class="process-detail-picture ">
+            <div ng-repeat="(index,process_image) in process_images"
+                 class="picture-content"
+                 ng-click="openWatchPictureWindow(index)"
+            >
+            <img image-lazy-src="{{process_image.domain+process_image.attached_name+process_img_style}}"
+                 style="{{productImageStyle}}"
+                 image-lazy-distance-from-bottom-to-load="50"
+            >
+                </div>
+            </div>
+        </ion-item>
+    </ion-content>
+
+  <!--  <ion-footer-bar class="mr-custom-footer">
+        <div class="mr-footer-bar" style="width:20%;background-color: #aae3d7;" ng-click="addFriend(product_store.userid)" ng-show="!isFriend_Flag">
+            <i class="ion-ios-personadd-outline min_icon_size"></i>
+            好友
+        </div>
+        <div class="mr-footer-bar" style="width:40%;background-color: #7de3cd;" ng-controller="PhoneCtrl" ng-click="phoneCallNumber(product_store.phone||product_store.userid)">
+            <i class="ion-ios-telephone-outline"></i>
+            电话联系
+        </div>
+        <div class="mr-footer-bar" style="width:40%;background-color: #39e3be;" ng-controller="CommonChatDetailCtrl" ng-click="openChatDetailWindowWithUserid(product_store.userid,product_store.store_name,product_store.header_logo+store_img_style)">
+            <i class="ion-ios-chatbubble-outline"></i>
+            在线咨询
+        </div>
+    </ion-footer-bar>-->
+
+</ion-modal-view>

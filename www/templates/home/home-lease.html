@@ -1,0 +1,157 @@
+<ion-view  hide-tabs>
+    <ion-nav-title>
+        <div class="item-input-inset head-address-input">
+            <div class="icon ion-right light " style="padding-right:6px;"
+                 ng-click="openChooseAreaWindow()"
+                 ng-controller="CommonAreaChooseWindowCtrl"
+            >
+                {{last_areaName||'不限'}}
+                <i class="ion-ios-arrow-down"></i>
+            </div>
+            <div class="item item-input item-input-wrapper  head-input"
+            >
+                <i class="icon ion-search placeholder-icon"></i>
+                <input
+                       type="text" placeholder="{{pageDataList[0].respondBody.keyword||'请输入租赁标题'}}"
+                       style="padding-right:0px "
+                       readonly="true"
+                       ng-click="openHistorySearchWindow('lease',pageDataList[0].respondBody.keyword||'','请输入租赁标题')"
+                       ng-controller="HistorySearchWindowCtrl"
+                        >
+            </div>
+        </div>
+    </ion-nav-title>
+    <ion-content  lazy-scroll>
+        <ion-refresher pulling-text="松开立即刷新..." on-refresh="lease_refresh(showIndex)"></ion-refresher>
+            <ion-item class="mr-item-100-logo-left item-icon-right lease-item"
+                      type="item-text-wrap"
+                      ng-repeat="lease in resultList[showIndex]"
+                      ui-sref="tab.home-lease-detail({lease_id:lease.leaseid})" >
+                <img
+                     image-lazy-src="{{::(lease.domain+lease.attached_name+mengran_img_style)}}"
+                     lazy-scroll-resize="true"
+                     image-lazy-distance-from-bottom-to-load="-50"
+                >
+                <span class="lease-list-title"  ng-bind="::lease.title"></span>
+                <div class=" lease-list-div1" style="padding:0;margin:0;">
+                    <span class="type-color" ng-bind="::lease.typeName">
+                    </span>
+                    <span class="more-right mr-color-aaa" ng-bind="::(lease.updatetime|limitTo:10)">
+                    </span>
+                </div>
+                <div class="lease-list-div1" >
+                    <span ng-bind="::(lease.province_name+lease.city_name+lease.county_name)">
+
+                    </span>
+                    <span class="more-right mr-color-aaa" >
+                        <i class="ion-ios-location mr-color-39E3BE"></i>
+                        {{::(lease.distance==''?'未知':(lease.distance|limitTo:3)+'km')}}
+                    </span>
+                </div>
+            </ion-item>
+        <ion-infinite-scroll ng-if="moreDataCanBeLoaded"
+                             on-infinite="commonParentLoadMore(showIndex)"
+                             distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+
+</ion-view>
+
+<!--查看职位详情界面-->
+<!--<script id="home_recruit_detailWindow.html" type="text/ng-template">
+    <ion-modal-view ng-controller="HomeRecruitDetailWindowCtrl">
+        <ion-header-bar class="bar-stable bar bar-header disable-user-behavior " align-title="center">
+            <button class="button back-button buttons button-clear header-item"
+                    on-touch="closeHomeRecruitDetailWindow()">
+                <i class="icon ion-ios-arrow-back mr-header-title-color">&nbsp;</i>
+            </button>
+            <div class="title title-center header-item"
+                 style="transform: translate3d(0px, 0px, 0px); left: 60px; right: 60px;font-weight:bold;">
+                <span class="nav-bar-title mr-header-title-color" ng-bind="_recruit.companyname"></span>
+            </div>
+            <button class="button  buttons button-clear header-item"
+                    >
+            </button>
+        </ion-header-bar>
+        <ion-content>
+            <div class="item  item-icon " style="text-align: center;color: #39e3be;padding-top: 12px">
+                <span  ng-bind="_recruit.job">
+                </span>
+                <br/>
+                <div style="color: #39e3be; text-align: left;font-size: 13px;padding-left: 12px"
+                      ng-bind="_recruit.startsalary+(_recruit.endsalary==''?'':'-')+_recruit.endsalary+'/'+_recruit.salaryUnitName"
+                        >
+                </div>
+
+                <div class="row"
+                      style="text-align: left;height: 18px;padding-left: 0px;">
+                    <div class="col col-50" >
+                        <div class="column-title" style="" >岗位性质：</div>
+                        <div class="column-content" ng-bind="_recruit.workpropertyid=='1'?'全职':'兼职'"></div>
+                    </div>
+                    <div class="col col-50">
+                        <div class="column-title">招聘人数：</div>
+                        <div class="column-content" ng-bind="::_recruit.recruitquantity"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="recruit-item">
+                <div class="column-title">
+                    工作地址
+                </div>
+                <div class="column-content "
+                        ng-bind="::(_recruit.province_name+_recruit.city_name+_recruit.county_name)">
+                </div>
+            </div>
+            <div class="recruit-item">
+                <div class="column-title"
+                        >
+                    职位福利
+                </div>
+                <div class="column-content "
+                        ng-bind="::_recruit.welfare">
+                </div>
+            </div>
+            <div class="recruit-item">
+                <div class="column-title">
+                    职位要求
+                </div>
+                <div class="column-content "
+                        ng-bind="::recruitDemand">
+                </div>
+            </div>
+            <div class="recruit-item">
+                <div class="column-title">
+                    职位描述
+                </div>
+                <div class="column-content "
+                     ng-bind="::_recruit.description">
+                </div>
+            </div>
+            <div class="recruit-item">
+                <div class="column-title" style="height: 20px">
+
+                </div>
+            </div>
+        </ion-content>
+        <div class="bar bar-footer bar-stable">
+            <div class="title">
+                <button ng-click="captureVideo();"
+                        class="button button-positive button-icon "
+                        style="margin-top: 8px;">电话联系
+                </button>
+            </div>
+        </div>
+
+
+    </ion-modal-view>
+</script>-->
+
+<script id="templates/homeLeasePopover.html" type="text/ng-template">
+    <ion-popover-view class="ion-popover-view-round-style">
+        <div>
+            <a ng-click="closePopover();" ui-sref="tab.home-lease-mine" class="item stable-bg light ion-popover-view-round-top">租赁管理</a>
+            <a ng-click="closePopover();" ui-sref="tab.home-lease-newLease" class="item stable-bg light ion-popover-view-round-bottom">租赁发布</a>
+        </div>
+    </ion-popover-view>
+</script>

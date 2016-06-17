@@ -1,0 +1,83 @@
+<ion-view hide-tabs>
+	<ion-nav-title >
+		<div class="item-input-inset mr-search-header head-address-input">
+			<div class="icon light "
+				 style="padding-right:6px;"
+				 ng-click="openChooseAreaWindow()"
+				 ng-controller="CommonAreaChooseWindowCtrl"
+			>
+				{{last_areaName||'不限'}}
+				<i class="ion-ios-arrow-down"></i>
+			</div>
+			<div class="item item-input item-input-wrapper mr-search-item head-input"
+				 >
+				<i class="icon ion-search placeholder-icon"></i>
+				<input type="text" placeholder="请输入商品名称"
+					   readonly="true"
+             ui-sref="tab.home-search-productHistory({searchType:'process'})"
+						>
+			</div>
+		</div>
+	</ion-nav-title>
+	<ion-content>
+  <ion-refresher pulling-text="松开立即刷新。。。" on-refresh="doRefresh()"></ion-refresher>
+	  <div class="separate-md-1"></div>
+	  <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="{{icons.length>1?true:false}}"
+					 class="home-menus-slide-box">
+		  <ion-slide class="menus-box" >
+			  <div class="col-25 mr-col-left-20" style="    width: 25%;" ng-repeat="menu in icons[0]"
+				   ui-sref="tab.home-process-selection({factory_category_id:menu.factory_category_id})"
+					  >
+				  <div class="mr-thumbnail-20">
+					  <img img-cache ng-src="{{::(menu.icon+img_style_icons)}}" >
+					  <div ng-bind="::menu.factory_category_name"></div>
+				  </div>
+			  </div>
+		  </ion-slide>
+	  </ion-slide-box>
+	<div class="separate-md-1 mr-clear-both"></div>
+	<div class="view-header">
+		<span>加工厂推荐</span><a class="more-right" ui-sref="tab.home-process-selection">更多</a>
+	</div>
+	<ion-list>
+	<ion-item class="item-thumbnail-left mr-item-store"
+			  ng-repeat="process in processList"
+        ng-click="openProcessDetailWindow(process.factory_process_id)"
+        ng-controller="ProcessDetailWindowCtrl"
+
+			  >
+        <img ng-src="{{::(process.header_logo==''?'img/default_header.png':(process.header_logo+img_style_process))}}">
+        <span class="omit title" ng-bind="::(process.nickname===''?'匿名加工厂':process.nickname)"></span>
+        <div>
+			<div class="authentication-style icon mr-font-size-12">
+				<div ng-show="::(process.is_pass_company==1)"
+					 ng-class="{'left-float':process.is_pass_person==='1'}">
+					<img src="img/authentication-company.png"
+						 class="company-authentication-img"
+					/>
+				</div>
+
+				<div ng-show="::(process.is_pass_person==='1')">
+					<img src="img/authentication-person.png"
+						 class="person-authentication-img"/>
+				</div>
+				<div ng-show="process.is_pass_person!='1'&&process.is_pass_person!='1'">
+					<span style="color:#999;">无认证</span>
+				</div>
+			</div>
+			<div class="mr-clear-both"></div>
+			<span class="mr-dispaly-right mr-color-aaa mr-font-size-12">
+				<span >
+					<i class="ion-ios-location mr-color-39E3BE"></i>
+                        {{::(process.distance==''?'未知':(process.distance|limitTo:3)+'km')}}
+				</span>
+			</span>
+		</div>
+		<div class="mr-font-size-12 mr-color-aaa mr-display-2line" style="padding:0;margin:0;">
+			<span ng-bind="::(process.province_name+process.city_name+store.county_name+process.street_address)"></span>
+		</div>
+    </ion-item>
+    </ion-list>
+	<div class="separate-md-1 mr-clear-both"></div>
+  </ion-content>
+</ion-view>

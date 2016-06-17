@@ -1,0 +1,29 @@
+<ion-view hide-tabs>
+    <ion-nav-title class="md-title" >
+        <span class="header-title" >色卡</span>
+    </ion-nav-title>
+    <ion-content >
+        <!--<ion-refresher pulling-text="松开立即刷新。。。" on-refresh="colorCardRefresh()"></ion-refresher>-->
+        <div class="separate-md-1" style="height:38px;">
+            <div class="item-input-inset mr-search-header" style="padding-top:8px;padding-bottom: 8px;">
+                <label class="item item-input item-input-wrapper mr-search-item" style="background-color:white;">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <form action="#">
+                        <input type="text" placeholder="搜索" ng-model="criteria" ng-change="resetDisplayed()">
+                    </form>
+                </label>
+            </div>
+        </div>
+        <div class="mr-col-25 mr-col-left mr-list-card-content" style="margin-bottom:-20px; "
+             ng-repeat="color_card in color_cardList | filter:criteria | limitTo:totalDisplayed "
+             ng-click="color_card_detail(color_card)">
+            <div class="mr-thumbnail" ng-click="openColorCardDetailWindow(color_card)">
+                <div style="width:100%;height:40px;background-color: {{'#'+color_card.card_value}};"></div>
+                <span class="mr-display-1line mr-font-size-12" style="background-color: #eee; text-align: center;" ng-bind="::color_card.card_code"></span>
+                <span class="mr-display-1line mr-font-size-12" style="background-color: #eee; text-align: center;" ng-bind="::color_card.card_value"></span>
+            </div>
+            <div class="separate-md-1" ng-if="($index+1)%28==0" style="width:100%;height:20px;background-color: #f2f2f2;"></div>
+        </div>
+        <ion-infinite-scroll ng-if="moreDataCanBeLoaded" on-infinite="loadMore()" distance="1%"> </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,70 @@
+.petelfin-radius-3{border-radius:3px;-webkit-border-radius:3px;-moz-border-radius:3px;}
+.petelfin-linear-gradient1,.petelfin-linear-gradient2{
+	background:-webkit-linear-gradient(top, #39E3BE, #1F7C68);
+	background:-moz-linear-gradient(top, #39E3BE, #1F7C68);
+	background:-o-linear-gradient(top, #39E3BE, #1F7C68);
+	background:-ms-linear-gradient(top, #39E3BE, #1F7C68);
+	background:linear-gradient(top, #39E3BE, #1F7C68);
+	*background:#0e72b0;
+	color:#ffffff;
+	font-weight: bold;
+}
+.petelfin-linear-gradient1:ACTIVE{
+	background:-webkit-linear-gradient(top, #39E3BE, #06C49B);
+	background:-moz-linear-gradient(top, #39E3BE, #06C49B);
+	background:-o-linear-gradient(top, #39E3BE, #06C49B);
+	background:-ms-linear-gradient(top, #39E3BE, #06C49B);
+	background:linear-gradient(top, #39E3BE, #06C49B);
+	*background:#06C49B;
+	cursor:pointer;
+	color:#cccccc;
+}
+.petelfin-linear-gray{
+	background:-webkit-linear-gradient(top, #FBFBFB, #DCDCDC);
+	background:-moz-linear-gradient(top, #FBFBFB, #DCDCDC);
+	background:-o-linear-gradient(top, #FBFBFB, #DCDCDC);
+	background:-ms-linear-gradient(top, #FBFBFB, #DCDCDC);
+	background:linear-gradient(top, #FBFBFB, #DCDCDC);
+	*background:#0e72b0;
+	color:#444;
+}
+.petelfin-linear-gray:ACTIVE{
+	background:-webkit-linear-gradient(top, #FBFBFB, #06C49B);
+	background:-moz-linear-gradient(top, #FBFBFB, #06C49B);
+	background:-o-linear-gradient(top, #FBFBFB, #06C49B);
+	background:-ms-linear-gradient(top, #FBFBFB, #06C49B);
+	background:linear-gradient(top, #FBFBFB, #06C49B);
+	*background:#06C49B;
+	cursor:pointer;
+	color:#cccccc;
+}
+.mr-button{
+	border-color: #b2b2b2;
+    color: #444;
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    padding: 0 12px;
+    min-width: 35%;
+    min-height: 30px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 2px;
+    vertical-align: top;
+    text-align: center;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    line-height: 30px;
+    cursor: pointer;
+}
+.mr-option-button{clear:both;width:100%;margin:0px;padding:0px;}
+.mr-button-clear {
+    border-color: transparent;
+    background: 0 0;
+    background-color:#eee;
+    box-shadow: none;
+    color: #b2b2b2;
+	-webkit-transition: opacity .1s;
+    transition: opacity .1s;
+    padding: 0 5px;
+}

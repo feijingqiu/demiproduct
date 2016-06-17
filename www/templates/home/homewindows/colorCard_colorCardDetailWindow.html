@@ -1,0 +1,23 @@
+<!--查看工厂详情窗口-->
+<ion-modal-view class="mengran-top" >
+    <ion-header-bar class="bar bar-positive item-input-inset mr-search-header main-bg-border"
+                    align-title="center">
+        <button class="button back-button buttons button-clear header-item"
+                ng-click="closeColorCardDetailWindow()">
+            <i class="icon ion-ios-arrow-back mr-header-title-color">&nbsp;</i>
+        </button>
+        <div class="title title-center header-item"
+             style="transform: translate3d(0px, 0px, 0px); left: 60px; right: 60px;font-weight:bold;">
+            <span class="nav-bar-title mr-header-title-color">色卡详细信息</span>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+      <div style="height:300px;background-color:{{'#'+card_value}};width:100%;">
+      </div>
+      <div class="separate-md-1"></div>
+      <div class="view-header">色卡编号&nbsp;&nbsp;<span class="mr-color-red mr-font-weight-bold" ng-bind="card_code"></span></div>
+      <div class="separate-md-1"></div>
+      <div class="view-header">色卡颜色值&nbsp;&nbsp;<span class="mr-color-red mr-font-weight-bold" ng-bind="'#'+card_value"></span></div>
+      <div class="separate-md-1"></div>
+    </ion-content>
+</ion-modal-view>

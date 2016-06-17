@@ -1,0 +1,43 @@
+.mr-item-header-logo-left,
+.mr-item-header-logo-left .item-content{
+  padding-left: 78px;
+  height: 72px;
+    padding-right: 8px;
+}
+.mr-item-header-logo-left > img:first-child,
+.mr-item-header-logo-left .item-image,
+.mr-item-header-logo-left .item-content > img:first-child,
+.mr-item-header-logo-left .item-content .item-image{
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    max-width: 60px;
+    max-height: 60px;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;}
+.mr-item-header-logo-left.item-complex {
+  padding-top: 0;
+  padding-left: 0; 
+}    
+.mr-item-100-logo-left,
+.mr-item-100-logo-left .item-content{
+  padding-left: 108px;
+  height: 100px; 
+}
+.mr-item-100-logo-left > img:first-child,
+.mr-item-100-logo-left .item-image,
+.mr-item-100-logo-left .item-content > img:first-child,
+.mr-item-100-logo-left .item-content .item-image{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    max-width: 90px;
+    max-height: 90px;
+    width: 100%;
+    height: 100%;}
+.mr-item-100-logo-left.item-complex {
+  padding-top: 0;
+  padding-left: 0; 
+}    
+.mr-item-100-logo-left{padding-right:16px;}

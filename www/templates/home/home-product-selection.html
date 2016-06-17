@@ -1,0 +1,242 @@
+<ion-view  hide-tabs>
+    <ion-nav-title>
+    	<div class="item-input-inset  head-address-input">
+			<div class="icon ion-right light "
+				 style="padding-right:6px;"
+				 ng-click="openChooseAreaWindow()"
+				 ng-controller="CommonAreaChooseWindowCtrl"
+			>
+				{{last_areaName||'不限'}}
+				<i class="ion-ios-arrow-down"></i>
+			</div>
+			<form novalidate name="searchForm"  ng-submit="refresh_products()">
+				<div class="item item-input item-input-wrapper mr-search-item head-input"
+					 >
+					<i class="icon ion-search placeholder-icon"></i>
+					<input type="text" placeholder="请输入商品名称"
+						   ng-model="parameters.keyword"
+												>
+				</div>
+			</form>
+		</div>
+    </ion-nav-title>
+    <div class="bar-subheader" style="position: relative;z-index: 2;display: block;">
+        <ion-item class="item-input "
+                  style="padding-left: 0px;background-color:#f2f2f2">
+            <div class="row" style="text-align: center;padding: 0">
+                <a class="col col-25" style="border-right: solid 1px #CCCCCC" ng-click="openPopover($event)" ng-bind="category_name_show">
+                </a>
+                <a class="col col-25" style="border-right: solid 1px #CCCCCC" ng-repeat="productSort in  productSortList" ng-bind="productSort.sortName"
+                   ng-class="{ 'mr-color-red': activeButton === productSort.sortCode }" ng-click="searchProduct(productSort.sortCode)">
+                </a>
+            </div>
+        </ion-item>
+    </div>
+    <ion-content class=" has-subheader" lazy-scroll>
+        <ion-refresher pulling-text="松开立即刷新..." on-refresh="refresh(0)">
+        </ion-refresher>
+      <!--  <div style="height:42px;">-->
+        </div>
+        <div class="list " >
+            <div class="purchase-50-list"
+                 ng-repeat="product in resultList[0]"
+                 type="item-text-wrap"
+                 ui-sref="tab.home-product-detail({product_id:product.product_id})">
+                <img style="{{purchaseImageStyle}}"
+                     image-lazy-src="{{::(product.domain+product.attached_name+mengran_img_style)}}"
+                     lazy-scroll-resize="true"
+                     image-lazy-distance-from-bottom-to-load="100">
+                <div style="{{image_fontStyle}}">
+				  <span class="purchase-img-font-fff" style="color:red;"
+                        ng-bind="::(product.min_price==0?'面议':(product.min_price+'元/'+product.product_uom_name))"></span>
+                </div>
+                <div style="{{image_fontStyle + ';background-color: #fff;margin-top: -4px;'}}">
+                    <span class="description-line-1" ng-bind="::(product.product_description==''?'&nbsp;':product.product_description)">
+                    </span>
+                    <div class="description-line-2" style="height:100%;">
+                        <span ng-bind="::(product.min_amount==0?'起售不限':(product.min_amount+product.product_uom_name+'起售'))"></span>
+                        <span class="more-right" ng-bind="::(product.is_new==1?'全新':'二手')"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ion-infinite-scroll ng-if="moreDataCanBeLoaded"  on-infinite="commonParentLoadMore(0)"
+                             distince="10%"></ion-infinite-scroll>
+
+    </ion-content>
+</ion-view>
+<!--
+<script id="product-selectionWindow.html" type="text/ng-template">
+    <ion-modal-view >
+        <ion-header-bar class="bar-stable bar bar-header disable-user-behavior " align-title="center">
+            <button class="button back-button buttons button-clear header-item"
+                    on-touch="closeProductSelectionWindow()">
+                <i class="icon ion-ios-arrow-back mr-header-title-color">取消</i>
+            </button>
+            <div class="title title-center header-item"
+                 style="transform: translate3d(0px, 0px, 0px); left: 60px; right: 60px;font-weight:bold;">
+                <span class="nav-bar-title mr-header-title-color">更多筛选</span>
+            </div>
+            <button class="button  buttons button-clear header-item"
+                    on-touch="commitSelection()"
+            >
+                <div class="mr-header-title-color" style="font-size: 14px;font-weight:bold;">提交</div>
+            </button>
+        </ion-header-bar>
+
+        <ion-content style="background: #f2f2f2">
+            <ion-item class="item-icon-right" type="item-text-wrap"
+                      ng-controller="CommonCitySelectWindowCtrl"
+                      ng-click="openCitySelectWindow(parameters.city_name)">
+                <i class="icon ion-chevron-right icon-accessory"></i>
+                <span>地区</span>
+                <span class="mr-font-size-14" style="float:right;color:#999" ng-bind="parameters.city_name|| &apos;不限&apos;"></span>
+            </ion-item>
+            <div class="separate-md-1"></div>
+            <div class="mr-option-div">
+                <ion-item class="item-icon-right" type="item-text-wrap"
+                          ng-controller="CommonProductTypeShowCtrl"
+                          ng-click="openShowProductTypeWindow()">
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                    <span>类目</span>
+                    <span class="mr-font-size-14" style="float:right;color:#999" ng-bind="propertyName.category_name"></span>
+                </ion-item>
+                <div class="separate-md-1 mr-clear-both"></div>
+                <div class="mr-option-div">
+                    <button class="mr-button-clear mr-font-size-14 mr-option-button" style="margin:0px;padding:0px;"
+                            ng-click="openProductIsNewWindow()" >
+                        <ion-item class="item-icon-right" type="item-text-wrap">
+                            <i class="icon ion-chevron-right icon-accessory"></i>
+                            <span style="float:left;">属性</span>
+                            <span class="mr-font-size-14" style="float:right;color:#999" ng-bind="propertyName.is_new"></span>
+
+                            <div class="option">
+                                <h2>{{option.name}}</h2>
+                            </div>
+                        </ion-item>
+                    </button>
+                </div>
+                <div class="separate-md-1 mr-clear-both"></div>
+
+                <ion-item class="item-icon-right" type="item-text-wrap" ng-click="openProductSalesWindow()">
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                    <span>起售量</span>
+                        <span class="mr-font-size-14"
+                              style="float:right;color:#999">{{parameters.amount || &apos;不限&apos;}}</span>
+                </ion-item>
+
+                <div class="separate-md-1"></div>
+                <ion-item  type="item-text-wrap" >
+                    <span>价格</span>
+                        <span class="mr-font-size-14"
+                              style="float:right;color:#999"
+                              ng-hide="parameters.maxprice==''||parameters.maxprice=='100'"
+                              ng-bind="parameters.maxprice=='0'?'0':'0~'+parameters.maxprice">
+                        </span>
+                        <span class="mr-font-size-14"
+                              style="float:right;color:#999"
+                              ng-show="parameters.maxprice==''||parameters.maxprice=='100'"
+                         >不限
+                        </span>
+                </ion-item>
+                <div class="item range range-positive">
+                    0
+                    <input type="range" name="price" min="0" max="100" ng-model='parameters.maxprice' value=0>
+                    100
+                </div>
+                <div class="separate-md-1"></div>
+                <div class="list list-miss-bottom">
+                    <a class="item   font-center"
+                       ng-click="clearSelections()">
+                        清空筛选项
+                    </a>
+                </div>
+            </div>
+        </ion-content>
+    </ion-modal-view>
+</script>
+
+<script id="product-isNewWindow.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar-stable bar bar-header disable-user-behavior " align-title="center">
+            <button class="button back-button buttons button-clear header-item"
+                    on-touch="closeProductIsNewWindow()">
+                <i class="icon ion-ios-arrow-back mr-header-title-color">&nbsp;</i>
+            </button>
+            <div class="title title-center header-item"
+                 style="transform: translate3d(0px, 0px, 0px); left: 60px; right: 60px;font-weight:bold;">
+                <span class=" mr-header-title-color">属性选择</span>
+            </div>
+        </ion-header-bar>
+        <ion-content scroll="false">
+            <div class="separate-md-1"></div>
+            <div>
+                <div class="list  list-miss-bottom "
+                     style="padding-top: 0px;"
+                     ng-repeat="is_new in is_newList"
+                     on-touch="is_newSelect(is_new)"
+                >
+                    <div class="item item-icon-right"
+                         ng-class="{'stable-bg':parameters.is_new==is_new.value}">
+                        {{::is_new.name}}
+                    </div>
+                </div>
+            </div>
+            <div class="separate-md-1"></div>
+        </ion-content>
+    </ion-modal-view>
+</script>
+<script id="product-salesWindow.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar class="bar-stable bar bar-header disable-user-behavior " align-title="center">
+            <button class="button back-button buttons button-clear header-item"
+                    on-touch="closeProductSalesWindow()">
+                <i class="icon ion-ios-arrow-back mr-header-title-color">&nbsp;</i>
+            </button>
+            <div class="title title-center header-item"
+                 style="transform: translate3d(0px, 0px, 0px); left: 60px; right: 60px;font-weight:bold;">
+                <span class=" mr-header-title-color">起售量</span>
+            </div>
+        </ion-header-bar>
+        <ion-content>
+            <div class="separate-md-1"></div>
+            <ion-item type="item-text-wrap" ng-click="productSalesCommit(0)">
+                <span>不限</span>
+            </ion-item>
+            <div class="view-header">
+                <span>起售量  {{parameters.amount}} 以下</span>
+                <input type="number" ng-model="parameters.amount" placeholder="请输入起售量"/>
+            </div>
+            <div class="separate-md-1"></div>
+            <div style="text-align:center;margin-top:10px;">
+                <div class="mr-button petelfin-linear-gray" style="width:50%" ng-click="productSalesCommit(1)">确定
+                </div>
+            </div>
+        </ion-content>
+    </ion-modal-view>
+</script>
+-->
+<script id="templates/categoryPopover.html" type="text/ng-template">
+    <ion-popover-view class="_category_popover" style="height: 75%;width:40%;background-color: #FFF;color:#333;">
+        <div class="productTypeList-box productTypeList-box-roll" style="height: 100%;background-color: #FFF;color:#333;">
+            <div>
+                <ul ng-repeat="(index,product_category) in product_categoryList">
+                    <li class="productTypeList-first" style="text-align:left;padding-left: 10px;background-color: #FFF;color:#333;"
+                        ng-class="{'ion-ios-minus-empty':product_category.product_category_id===productTypeFirstChose,
+                                 'ion-ios-plus-empty':product_category.product_category_id!==productTypeFirstChose,
+                                 'stable-bg':product_category.product_category_id===productTypeChildrenChose}"
+                        ng-click="productTypeFirstChoose(index,product_category.product_category_id,product_category.category_name)"
+                        ng-bind="::product_category.category_name">
+                    </li>
+                    <li ng-repeat="productChildren in product_category.children"
+                        class="productTypeList-next " style="text-align:left;padding-left: 30px;background-color: #FFF;color:#333;"
+                        ng-class="{'children-hidden':product_category.product_category_id!==productTypeFirstChose,
+                                'stable-bg':productChildren.product_category_id===productTypeChildrenChose}"
+                        ng-click="productTypeChildrenChoose(productChildren.product_category_id,productChildren.category_name)"
+                        ng-bind="::productChildren.category_name">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </ion-popover-view>
+</script>

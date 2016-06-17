@@ -1,0 +1,91 @@
+<ion-view hide-tabs>
+    <ion-nav-title class="md-title">
+        <span class=" header-title">租赁详情</span>
+    </ion-nav-title>
+    　
+    <ion-content class="has-footer">
+        <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="{{lease_images.length>1?true:false}}"
+                       class="slide-box home-top-ad-slide-box">
+            <ion-slide ng-repeat="(index,lease_image) in lease_images"
+                        >
+                <div class="home-top-ad-box">
+                    <img
+                            ng-click="openWatchPictureWindow(index)"
+                        ng-src="{{::(lease_image.domain+lease_image.attached_name+mengran_img_style)}}" width="100%">
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+
+        <div class="separate-md-1"></div>
+        <div class="item ">
+            <div ng-bind="leaseInfo.title" ></div>
+        </div>
+        <div class="item ">
+            <div class="row" style="padding: 0px">
+                <div class="col col-40 "  style="padding: 0px">
+                    <div class="col-left-title">租赁类型</div>
+                    <div class="col-content"
+                         ng-bind="leaseInfo.typeName"
+                    ></div>
+                </div>
+            </div>
+        </div>
+        <div class="item ">
+            <div class="row" style="padding: 0px">
+                <div class="col col-40 "  style="padding: 0px">
+                    <div class="col-left-title">联系人</div>
+                    <div class="col-content"
+                            ng-bind="leaseInfo.linkman"
+                            ></div>
+                </div>
+
+                <div class="col col-60" style="padding: 0px">
+                    <div class="col-right-title">电话</div>
+                    <div class="col-content"
+                            ng-bind="leaseInfo.phone"
+                    ></div>
+                </div>
+            </div>
+        </div>
+        <div class="item ">
+            <div class="row" style="padding: 0px">
+                <div class="col col-40" style="padding: 0px">
+                    <div class="col-left-title">租金</div>
+                    <div class="col-content"
+                        ng-bind="leaseInfo.rent+' 元/'+leaseInfo.timeUnitName"
+                            ></div>
+                </div>
+
+                <div class="col col-60 "  style="padding: 0px">
+                    <div class="col-right-title">面积</div>
+                    <div class="col-content"
+                         ng-bind="leaseInfo.area+' '+leaseInfo.areaUnitName"
+                            ></div>
+                </div>
+            </div>
+        </div>
+        <div class="item ">
+            <h2 class="store-info " style="color: #999">地址</h2>
+            <h3 class="store-info-text"
+                style="color: #444"
+                    > {{leaseInfo.province_name+leaseInfo.city_name+leaseInfo.county_name+leaseInfo.street_address}}
+              <!--<span style="color:#39E3BE;font-size: large" class="main-color ion-navigate" ng-click="addressMapNavigation(leaseInfo.longitude,leaseInfo.latitude)"></span>-->
+            </h3>
+        </div>
+        <div class="separate-md-1"></div>
+        <div class="recruit-item">
+            <div class="column-title " style="background-color: #fff">
+                详细信息
+            </div>
+            <div class="column-content " style="font-size: 14px"
+                 ng-bind="leaseInfo.leasedescribe">
+            </div>
+        </div>
+
+        <div class="separate-md-1"></div>
+    </ion-content>
+    <ion-footer-bar class="mr-custom-footer">
+        <div class="mr-footer-bar" ng-hide="lookBySelf" style="width:100%;background-color: #39e3be;color:white;"  ng-click="phoneCallNumber(leaseInfo.phone)">电话联系
+        </div>
+    </ion-footer-bar>
+</ion-view>

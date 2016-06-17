@@ -1,0 +1,82 @@
+
+<ion-view hide-tabs>
+    <ion-nav-title >
+      
+        <div class="item-input-inset  head-address-input">
+			<div class="icon ion-right light "
+				 style="padding-right:6px;"
+				 ng-click="openChooseAreaWindow()"
+				 ng-controller="CommonAreaChooseWindowCtrl"
+			>
+				{{last_areaName||'不限'}}    
+				<i class="ion-ios-arrow-down"></i>
+			</div>
+			<form novalidate name="searchForm"  ng-submit="searchProcess()">
+				<div class="item item-input item-input-wrapper mr-search-item head-input"
+					 >
+					<i class="icon ion-search placeholder-icon"></i>
+					<input type="text" placeholder="请输入商品名称"
+						   ng-model="process_params.keyword"
+												>
+				</div>
+			</form>
+		</div>
+        
+        
+        
+    </ion-nav-title>
+<!--<ion-nav-title class="item-input-inset">
+  <form novalidate name="searchForm" class="fm-form" ng-submit="searchProcess()">
+	<label class="item item-input item-input-wrapper mr-search-item">
+		<i class="icon ion-search placeholder-icon"></i>
+		<input type="search" placeholder="请输入加工厂名称"  ng-model="process_params.keyword">
+	</label>
+  </form>
+</ion-nav-title>-->
+    <ion-content lazy-scroll>
+            <ion-refresher pulling-text="松开立即刷新。。。" on-refresh="process_refresh(0)"></ion-refresher>
+        <ion-list>
+            <ion-item class="item-thumbnail-left mr-item-store"
+                      ng-repeat="store in resultList[0]"
+                      ng-controller="ProcessDetailWindowCtrl"
+                      ng-click="openProcessDetailWindow(store.factory_process_id)"
+                      >
+                <img image-lazy-src="{{::(store.header_logo==''?'img/default_header.png':(store.header_logo+mengran_img_style))}}"
+                     image-lazy-distance-from-bottom-to-load="-50"
+                >
+                <span class="omit title">{{store.nickname===""?"匿名加工厂":store.nickname}}</span>
+                <div>
+                    <div class="authentication-style icon mr-font-size-12">
+                        <div ng-show="::(store.is_pass_company==1)"
+                             ng-class="{'left-float':store.is_pass_person==='1'}">
+                            <img src="img/authentication-company.png"
+                                 class="company-authentication-img"
+                                    />
+                        </div>
+
+                        <div ng-show="::(store.is_pass_person==='1')">
+                            <img src="img/authentication-person.png"
+                                 class="person-authentication-img"/>
+                        </div>
+                        <div ng-show="::(store.is_pass_person!='1'&&store.is_pass_person!='1')">
+                            <span style="color:#999;">无认证</span>
+                        </div>
+                    </div>
+                    <div class="mr-clear-both"></div>
+                    <span class="mr-dispaly-right mr-color-aaa mr-font-size-12">
+                        <span >
+                           <i class="ion-ios-location mr-color-39E3BE"></i>
+                            {{::(store.distance==''?'未知':(store.distance|limitTo:3)+'km')}}
+                         </span>
+                    </span>
+                </div>
+                <div class="mr-font-size-12 mr-color-aaa mr-display-2line" style="padding:0;margin:0;">
+                    <span>{{::(store.province_name+store.city_name+store.county_name+store.street_address)}}</span>
+                </div>
+
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll  ng-if="moreDataCanBeLoaded" icon="ion-loading-d" on-infinite="commonParentLoadMore(0)" distance="1%">
+        </ion-infinite-scroll>
+    </ion-content>
+</ion-view>

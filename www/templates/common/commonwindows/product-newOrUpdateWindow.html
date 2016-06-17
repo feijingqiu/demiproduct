@@ -1,0 +1,243 @@
+<ion-modal-view ng-controller="ProductUpdateOrNewWindowCtrl">
+    <ion-header-bar class="bar-stable bar bar-header disable-user-behavior " align-title="center">
+        <button class="button back-button buttons button-clear header-item"
+                ng-click="closeUpdateOrNewProductWindow()">
+            <i class="icon ion-ios-arrow-back mr-header-title-color"></i>
+        </button>
+        <div class="title title-center header-item"
+             style="transform: translate3d(0px, 0px, 0px); left: 60px; right: 60px;font-weight:bold;">
+            <span class="nav-bar-title mr-header-title-color" ng-bind="productUpdateOrNew_title"></span>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form name="product_newOrUpdateForm"
+              novalidate
+        >
+            <div class="view-header ">
+                    <textarea style="margin: 0px; " class="border-shape"
+                              placeholder="    产品描述，例如：针织提花面料，要求现货"
+                              ng-model="commitData.product_description" rows="3"
+                              maxlength="100"></textarea>
+                <prompt-words words="(100-commitData.product_description.length)" ></prompt-words>
+            </div>
+            <label class="item item-input item-borderless">
+                <div class="left-input-title">
+                    &nbsp; 编<span class="font-space-double">号</span>
+                </div>
+                <div class="left-input-button">
+                    <input type="text"
+                           class="border-shape"
+                           placeholder="输入产品编号"
+                           ng-model="commitData.product_code"
+                           maxlength="12"
+                    >
+                </div>
+            </label>
+            <label class="item item-input item-borderless">
+                <div class="left-input-title">
+                    <span style="color: red">*</span>计量单位
+                </div>
+                <div class="left-input-button">
+                    <input type="text"
+                           class="border-shape"
+                           placeholder="{{commitData.product_uom_name}}"
+                           ng-controller="CommonProductUomCtrl"
+                           readOnly="true"
+                           ng-click="openChooseUomWindow(commitData.product_category_id)"
+                    >
+                </div>
+            </label>
+            <label class="item item-input item-borderless">
+                <div class="left-input-title">
+                    <span style="color: red">*</span>库存数量</span>
+                </div>
+                <div class="left-input-button">
+                    <input type="number"
+                           proving-amount
+                           class="border-shape"
+                           placeholder="输入数量"
+                           ng-model="commitData.inventory_quantity"
+                           required
+                    >
+                </div>
+            </label>
+            <div class="item item-input item-borderless">
+                <div class="left-input-title">
+                    &nbsp;价格区间
+                </div>
+
+                <div class="left-input-button" style="font-size:12px;padding-right: 2%;">
+                    <div class=" item-input item-borderless "
+                         style="text-align: right;margin-right:2%;
+                              padding: 0px">
+                        <div style="width: 80%;text-align: center">价格默认为面议</div>
+                        <a style="padding-left: 8%;padding-right: 2%;" on-touch="increaseLine()" ng-show="priceList[0].isShow">
+                            <i class="icon ion-plus " style="min-height: 16px;color: #999999;" ></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="item item-input item-borderless">
+                <div class="left-input-title"style="text-align: right; ">
+                    起订量
+                </div>
+                <div class="left-input-button" style="font-size:12px;padding-right: 2%;">
+                    <div class=" item-input item-borderless "
+                         style="text-align: right;margin-right:2%;
+                              padding: 0px">
+                        <div class="" style="right: 0px">
+                            <input type="number"
+                                   name="first_price"
+                                   class="border-shape"
+                                   ng-model="priceList[0].amount"
+                                   style="padding: 0;width: 32px;"
+                            >
+                        </div>
+                        <div style="margin-left: 2%;text-align: left; "
+                             ng-bind="commitData.product_uom_name+'及以上'">
+                        </div>
+                        <div style="margin-left: 2%;">
+                            <input type="number"
+                                   class="border-shape"
+                                   ng-model="priceList[0].price"
+                                   style="padding: 0;width: 32px;float: left;"
+
+                            >
+                        </div>
+                        <div style="margin-left: 2%;text-align: left; float: left;"
+                             ng-bind="'元/' + commitData.product_uom_name"
+                        >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-input item-borderless" ng-show="priceList[1].isShow">
+                <div class="left-input-title"style="text-align: right; ">
+                    购买
+                </div>
+
+                <div class="left-input-button" style="font-size:12px;padding-right: 2%;">
+                    <div class=" item-input item-borderless "
+                         style="text-align: right;margin-right:2%;
+                              padding: 0px">
+                        <div  style="right: 0px">
+                            <input type="number"
+                                   class="border-shape"
+                                   ng-model="priceList[1].amount"
+                                   style="padding: 0;width: 32px;"
+                            >
+                        </div>
+                        <div style="margin-left: 2%;text-align: left; ">单位及以上
+                        </div>
+                        <div style="margin-left: 2%;">
+                            <input type="number"
+                                   class="border-shape"
+                                   ng-model="priceList[1].price"
+                                   style="padding: 0;width: 32px;float: left;"
+                            >
+                        </div>
+                        <div style="margin-left: 2%;text-align: left; float: left;">
+                            元/单位
+                        </div>
+                        <i class="icon ion-minus " style="margin-left: 2%;color: #999999;" ng-click="decreaseLine(1)"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-input item-borderless" ng-show="priceList[2].isShow">
+                <div class="left-input-title"style="text-align: right; ">
+                    购买
+                </div>
+
+                <div class="left-input-button" style="font-size:12px;padding-right: 2%;">
+                    <div class=" item-input item-borderless "
+                         style="text-align: right;margin-right:2%;
+                              padding: 0px">
+                        <div  style="right: 0px">
+                            <input type="number"
+                                   class="border-shape"
+                                   ng-model="priceList[2].amount"
+                                   style="padding: 0;width: 32px;"
+                            >
+                        </div>
+                        <div style="margin-left: 2%;text-align: left; ">单位及以上
+                        </div>
+                        <div style="margin-left: 2%;">
+                            <input type="number"
+                                   class="border-shape"
+                                   ng-model="priceList[2].price"
+                                   style="padding: 0;width: 32px;float: left;"
+                            >
+                        </div>
+                        <div style="margin-left: 2%;text-align: left; float: left;">
+                            元/单位
+                        </div>
+                        <i class="icon ion-minus " style="margin-left: 2%;color: #999999;" ng-click="decreaseLine(2)"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-input item-borderless">
+                <div class="left-input-title" style="float: left;padding-top: 6px">
+                    <span style="color: red">*</span>是否全新
+                </div>
+                <div class=" left-input-button">
+                    <div class="bottom-onebyTwo" ng-repeat="isNew in isNewList ">
+                        <button class="bottom-default"
+                                ng-class="{'bottom-choose':commitData.is_new===isNew.id}"
+                                ng-click="isNewChose(isNew.id)">
+                            {{isNew.name}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-input item-borderless">
+                <div class="left-input-title" style="float: left;padding-top: 6px">
+                    <span style="color: red">*</span>隐私产品
+                </div>
+                <div class=" left-input-button">
+                    <div class="bottom-onebyTwo" ng-repeat="isPrivacy in is_privacyList ">
+                        <button class="bottom-default"
+                                ng-class="{'bottom-choose':commitData.is_privacy===isPrivacy.id}"
+                                ng-click="isPrivacyChose(isPrivacy.id)">
+                            {{isPrivacy.name}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!--图片上传选择-->
+            <div ng-controller="CommonPicturesCtrl">
+                <div class="item item-input item-borderless" ng-controller="CommonLookPictureCtrl">
+                    <div class="left-input-title"> <span style="color: red">*</span>上传样图</div>
+                    <div class=" left-input-button">
+                        <div class=" upload-picture">
+                            <div class="picture"
+                                 ng-repeat="picture in pictureInfo.pictureList"
+                                 ng-click="openLookPictureWindow(pictureInfo,$index)"
+                            >
+                                <img width="60" height="60" ng-src="{{picture.url}}" ><!--ng-if="picture.url!=''"-->
+                            </div>
+                            <div class="picture" ng-hide="pictureInfo.selectedNum == pictureInfo.pictureMaxNum">
+                                <img ng-click="addPicture()" ng-src="{{pictureInfo.default_picture}}">
+                            </div>
+                        </div>
+                        <div class=" item-thumbnail">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="view-header">
+                <div class="button-bar ">
+                    <input    type="submit"
+                              ng-disabled="!(product_newOrUpdateForm.$valid&&pictureInfo.pictureList.length>0)"
+                              class="button button-positive botton-color"
+                              ng-click="beforeCommitData()"
+                              value="提交" />
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-modal-view>

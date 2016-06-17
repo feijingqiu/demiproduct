@@ -1,0 +1,49 @@
+<ion-modal-view ng-controller="HistorySearchWindowCtrl">
+    <ion-header-bar class="bar-stable bar bar-header disable-user-behavior " align-title="center">
+        <button class="button back-button buttons button-clear header-item"
+                ng-click="closeHistorySearchWindow()">
+            <i class="icon ion-ios-arrow-back mr-header-title-color"></i>
+        </button>
+        <div class="item-input-inset">
+            <form novalidate name="LoginForm"  ng-submit="toSearch(keywordInfo.keyword)">
+                <label class="item item-input item-input-wrapper mr-search-item">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input type="text"
+                           placeholder="{{::placeholderInfo}}"
+                           ng-model="keywordInfo.keyword"
+                            >
+                </label>
+            </form>
+        </div >
+    </ion-header-bar>
+    <ion-content class="search-content-bg" delegate-handle="historySearchScroll">
+        <div class="hot-word-div" >
+            <div class="hot-word-title" ng-if="productSearchWordList" >
+                <span >热门搜索</span>
+            </div>
+            <div class="hot-word-content" ng-if="productSearchWordList" >
+                <span ng-repeat="productSearchWord in productSearchWordList"
+                      ng-click="search(productSearchWord.keyword)"
+                      ng-bind="::productSearchWord.keyword">
+                </span>
+            </div>
+            <div class="history-word-title">
+                <span >历史搜索</span>
+            </div>
+        </div>
+        <ion-list class="search-content-bg " show-delete="false" ng-if="historySearchWordList.length>0">
+            <ion-item class="search-content-bg item-borderless" ng-repeat="(index,history_search) in historySearchWordList" type="item-text-wrap"
+                      ng-click="toSearch(history_search.history_keyword)"
+                    >
+                <div class="ion-search keyword-content" ><span  ng-bind="::history_search.history_keyword"></span></div>
+                <ion-option-button class="button-assertive"
+                                   ng-click="deleteOneKeyword(index)">
+                    删除
+                </ion-option-button>
+            </ion-item>
+            <ion-item class="search-content-bg item-borderless"style="    padding-bottom: 0px;padding-top: 10px;">
+                <div class="keyword-clear" ng-click="clearHistoryKeyword()">清空历史记录</div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-modal-view>

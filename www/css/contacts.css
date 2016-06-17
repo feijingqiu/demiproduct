@@ -1,0 +1,54 @@
+.disable-user-behavior {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-drag: none;
+    -ms-touch-action: none;
+    -ms-content-zooming: none;
+}
+
+.mr-contacts-right-bar>div{
+    padding:0px;
+    margin:0px;
+    height:18px;
+}
+
+.rj-contacts-right-bar {position: fixed;display:table;width:20px;height:100%;z-index:1000;margin:0 auto;color:red;right: 0;color: #545454;font-size: 80%;}
+#cell{display:table-cell; vertical-align:middle;text-align:center;}
+.contact-opertion-button{padding-right:10px;padding-left:10px;line-height: 20px;}
+.picMsg-image{border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px;width: 100px;height:100px;}
+.speech-bubble{
+    position: relative;
+    background-color: #39E3BE;
+    height: 30px;
+    line-height: 30px; /* 垂直居中 */
+    color: #efeff4;
+    text-align: center;
+    border-radius: 10px;
+    font-family: sans-serif;
+    border-color:#39E3BE;
+}
+.speech-bubble:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 15px solid;
+}
+
+.speech-bubble-right:after {
+    border-left-color: #39E3BE;
+    left: 100%;
+    top: 50%;
+    margin-top: -15px;
+}
+.speech-bubble-left:after {
+    border-right-color: #39E3BE;
+    top: 50%;
+    right: 100%;
+    margin-top: -15px;
+}
